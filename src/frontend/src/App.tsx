@@ -89,7 +89,7 @@ const EDUCATION: EducationItem[] = [
     status: "Pursuing",
     institution: "Indira College of Engineering and Management",
     location: "Pune, Maharashtra",
-    year: "2024 – Present",
+    year: "2024 – 2026",
     icon: GraduationCap,
   },
   {
