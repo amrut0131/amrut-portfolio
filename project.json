@@ -1,0 +1,24 @@
+{
+  "overview": "A personal portfolio website for Amrut Gubyad, a first-year Computer Science student. Features a hero section, about, skills, goals, education timeline, and contact links — all in a sleek OLED black and sky blue theme.",
+  "features": [
+    "Hero section with call-to-action",
+    "About Me section",
+    "Skills breakdown with core strengths and technical skills",
+    "Career goals section",
+    "Education timeline",
+    "Contact section with email, LinkedIn, and GitHub links",
+    "OLED black and sky blue color palette",
+    "Smooth scroll navigation",
+    "Fully responsive design"
+  ],
+  "category": "showcase",
+  "tags": [
+    "portfolio",
+    "personal",
+    "developer",
+    "oled",
+    "sky-blue",
+    "responsive"
+  ],
+  "last_updated": "2026-04-10T19:27:47.632Z"
+}
