@@ -89,7 +89,7 @@ const EDUCATION: EducationItem[] = [
     status: "Pursuing",
     institution: "Indira College of Engineering and Management",
     location: "Pune, Maharashtra",
-    year: "2024 – 2026",
+    year: "2026",
     icon: GraduationCap,
   },
   {
@@ -97,7 +97,7 @@ const EDUCATION: EducationItem[] = [
     status: "Completed",
     institution: "Dayanand College of Arts and Science",
     location: "Solapur, Maharashtra",
-    year: "2023 – 2024",
+    year: "2024",
     icon: GraduationCap,
   },
   {
@@ -105,7 +105,7 @@ const EDUCATION: EducationItem[] = [
     status: "Completed",
     institution: "Shri Siddheshwar Bal Mandir High School",
     location: "Solapur, Maharashtra",
-    year: "2021 – 2022",
+    year: "2022",
     icon: GraduationCap,
   },
 ];
@@ -673,12 +673,30 @@ function EducationSection() {
 // ── Contact ────────────────────────────────────────────────────────
 function ContactSection() {
   const [copied, setCopied] = useState(false);
-  const email = "your-email@example.com";
+  const [formState, setFormState] = useState({
+    name: "",
+    project: "",
+    email: "",
+  });
+  const [submitted, setSubmitted] = useState(false);
+  const [submitting, setSubmitting] = useState(false);
+  const email = "amrutgubyad@gmail.com";
 
   const copyEmail = async () => {
     await navigator.clipboard.writeText(email);
     setCopied(true);
     setTimeout(() => setCopied(false), 2000);
+  };
+
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    setSubmitting(true);
+    setTimeout(() => {
+      setSubmitting(false);
+      setSubmitted(true);
+      setFormState({ name: "", project: "", email: "" });
+      setTimeout(() => setSubmitted(false), 5000);
+    }, 800);
   };
 
   const LINKS: ContactLink[] = [
@@ -693,9 +711,9 @@ function ContactSection() {
     {
       icon: Linkedin,
       label: "LinkedIn",
-      value: "Add your LinkedIn",
-      href: "#",
-      hint: "Coming soon",
+      value: "linkedin.com/in/amrut-gubyad-46a498384",
+      href: "https://www.linkedin.com/in/amrut-gubyad-46a498384/",
+      hint: "View profile",
       dataOcid: "contact-linkedin",
     },
     {
@@ -729,7 +747,10 @@ function ContactSection() {
           </p>
         </motion.div>
 
-        <div className="grid sm:grid-cols-3 gap-4" data-ocid="contact-links">
+        <div
+          className="grid sm:grid-cols-3 gap-4 mb-14"
+          data-ocid="contact-links"
+        >
           {LINKS.map((link, i) => {
             const Icon = link.icon;
             const inner = (
@@ -778,6 +799,175 @@ function ContactSection() {
             );
           })}
         </div>
+
+        {/* Send Message Form */}
+        <motion.div
+          initial={{ opacity: 0, y: 24 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.6, delay: 0.2 }}
+          data-ocid="contact-send-message"
+        >
+          <div className="card-glass text-left">
+            <div className="flex items-center gap-3 mb-6">
+              <span className="w-8 h-8 rounded border border-primary/40 bg-primary/10 flex items-center justify-center flex-shrink-0">
+                <Mail size={15} className="text-primary" />
+              </span>
+              <div>
+                <h3 className="text-base font-semibold text-foreground font-display">
+                  Send Message
+                </h3>
+                <p className="text-xs text-muted-foreground mt-0.5">
+                  Drop me a message and I'll get back to you.
+                </p>
+              </div>
+            </div>
+
+            <AnimatePresence mode="wait">
+              {submitted ? (
+                <motion.div
+                  key="success"
+                  initial={{ opacity: 0, scale: 0.95 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  exit={{ opacity: 0, scale: 0.95 }}
+                  transition={{ duration: 0.3 }}
+                  className="flex flex-col items-center justify-center gap-3 py-10"
+                  data-ocid="contact-form-success"
+                >
+                  <span className="w-12 h-12 rounded-full border-2 border-primary bg-primary/10 flex items-center justify-center">
+                    <svg
+                      width="22"
+                      height="22"
+                      viewBox="0 0 22 22"
+                      fill="none"
+                      aria-hidden="true"
+                    >
+                      <path
+                        d="M5 11.5L9 15.5L17 7"
+                        stroke="currentColor"
+                        strokeWidth="2"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        className="text-primary"
+                      />
+                    </svg>
+                  </span>
+                  <p className="text-foreground font-semibold font-display">
+                    Message sent!
+                  </p>
+                  <p className="text-sm text-muted-foreground">
+                    Thanks for reaching out. I'll be in touch soon.
+                  </p>
+                </motion.div>
+              ) : (
+                <motion.form
+                  key="form"
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  exit={{ opacity: 0 }}
+                  transition={{ duration: 0.2 }}
+                  onSubmit={handleSubmit}
+                  className="flex flex-col gap-4"
+                  data-ocid="contact-form"
+                >
+                  <div className="grid sm:grid-cols-2 gap-4">
+                    <div className="flex flex-col gap-1.5">
+                      <label
+                        htmlFor="msg-name"
+                        className="text-xs font-medium text-muted-foreground tracking-wide uppercase"
+                      >
+                        Enter Name
+                      </label>
+                      <input
+                        id="msg-name"
+                        type="text"
+                        required
+                        placeholder="Your full name"
+                        value={formState.name}
+                        onChange={(e) =>
+                          setFormState((s) => ({ ...s, name: e.target.value }))
+                        }
+                        data-ocid="contact-form-name"
+                        className="w-full rounded-md border border-border bg-muted/30 px-3 py-2.5 text-sm text-foreground placeholder:text-muted-foreground/60 focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary/40 transition-smooth"
+                      />
+                    </div>
+                    <div className="flex flex-col gap-1.5">
+                      <label
+                        htmlFor="msg-project"
+                        className="text-xs font-medium text-muted-foreground tracking-wide uppercase"
+                      >
+                        Project Name
+                      </label>
+                      <input
+                        id="msg-project"
+                        type="text"
+                        required
+                        placeholder="What's your project?"
+                        value={formState.project}
+                        onChange={(e) =>
+                          setFormState((s) => ({
+                            ...s,
+                            project: e.target.value,
+                          }))
+                        }
+                        data-ocid="contact-form-project"
+                        className="w-full rounded-md border border-border bg-muted/30 px-3 py-2.5 text-sm text-foreground placeholder:text-muted-foreground/60 focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary/40 transition-smooth"
+                      />
+                    </div>
+                  </div>
+                  <div className="flex flex-col gap-1.5">
+                    <label
+                      htmlFor="msg-email"
+                      className="text-xs font-medium text-muted-foreground tracking-wide uppercase"
+                    >
+                      Email ID
+                    </label>
+                    <input
+                      id="msg-email"
+                      type="email"
+                      required
+                      placeholder="your@email.com"
+                      value={formState.email}
+                      onChange={(e) =>
+                        setFormState((s) => ({ ...s, email: e.target.value }))
+                      }
+                      data-ocid="contact-form-email"
+                      className="w-full rounded-md border border-border bg-muted/30 px-3 py-2.5 text-sm text-foreground placeholder:text-muted-foreground/60 focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary/40 transition-smooth"
+                    />
+                  </div>
+                  <div className="flex justify-end pt-1">
+                    <button
+                      type="submit"
+                      disabled={submitting}
+                      data-ocid="contact-form-submit"
+                      className="inline-flex items-center gap-2 bg-primary text-primary-foreground font-semibold text-sm px-6 py-2.5 rounded-md hover:bg-primary/90 hover:shadow-glow disabled:opacity-60 disabled:cursor-not-allowed transition-smooth focus-ring"
+                    >
+                      {submitting ? (
+                        <>
+                          <motion.span
+                            animate={{ rotate: 360 }}
+                            transition={{
+                              repeat: Number.POSITIVE_INFINITY,
+                              duration: 0.8,
+                              ease: "linear",
+                            }}
+                            className="inline-block w-3.5 h-3.5 border-2 border-primary-foreground/40 border-t-primary-foreground rounded-full"
+                          />
+                          Sending…
+                        </>
+                      ) : (
+                        <>
+                          <Mail size={14} />
+                          Send Message
+                        </>
+                      )}
+                    </button>
+                  </div>
+                </motion.form>
+              )}
+            </AnimatePresence>
+          </div>
+        </motion.div>
       </div>
     </section>
   );
